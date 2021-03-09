@@ -24,6 +24,10 @@ dependencies {
     implementation 'commons-validator:commons-validator:1.4.0'
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.2'
 
+    implementation 'com.google.guava:guava:23.0-rc1'    // 제거예정
+    // https://mvnrepository.com/artifact/commons-codec/commons-codec
+    implementation 'commons-codec:commons-codec:1.15'   // 제거예정
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
