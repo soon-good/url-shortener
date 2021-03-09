@@ -1,6 +1,7 @@
 # 참고자료
 - [Base62](https://en.wikipedia.org/wiki/Base62)
 - [Base64 인코딩](https://ko.wikipedia.org/wiki/%EB%B2%A0%EC%9D%B4%EC%8A%A464)
+- [BASE62 인코딩 커스터마이징](https://www.codeproject.com/Articles/1076295/Base-Encode)
 
 
 # BASE62의 개념
