@@ -34,37 +34,5 @@ public class TddBase62Encoder {
 	void 문자열의_각_문자의_ASCII_코드를_비트로_출력(){
 
 	}
-
-
-	@Test
-	@DisplayName("base62 encoding test #1")
-	void testBase62Encoding1(){
-		System.out.println(encode1(99999999));
-	}
-
-	private String encode1(int value){
-		final StringBuffer sb = new StringBuffer();
-		do{
-			int i = value % 62;
-			sb.append(BASE_62_LETTERS.charAt(i));
-			value /= 62;
-		}while(value>0);
-		System.out.println(sb.toString());
-		return sb.toString();
-	}
-
-	@Test
-	@DisplayName("base62 encoding test #2")
-	void testBase62Encoding2(){
-		System.out.println(encode2(99999999));
-	}
-
-	private String encode2(long param){
-		final StringBuffer sb = new StringBuffer();
-		while (param > 0){
-			sb.append(BASE_62_LETTERS.charAt((int) (param % 62)));
-			param /= 62;
-		}
-		return sb.toString();
-	}
+	
 }
