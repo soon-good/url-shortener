@@ -12,12 +12,12 @@ import lombok.Data;
 @Data
 public class UrlHistory {
 
-	@Id
+	@Id @Column(name = "seq")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "url_history_seq")
-	private BigInteger id;
+	private BigInteger urlSeq;
 
-	@Column(name = "url")
-	private String url;
+	@Column(name = "original_url")
+	private String originalUrl;
 
 	@Column(name = "short_url")
 	private String shortUrl;
