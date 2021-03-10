@@ -20,6 +20,16 @@ public class QdslUrlHistory {
 		this.queryFactory = new JPAQueryFactory(entityManager);
 	}
 
+	public UrlHistory findByAnyUrl(String inputUrl){
+		UrlHistory urlHistory = queryFactory
+			.selectFrom(QUrlHistory.urlHistory)
+			.where(QUrlHistory.urlHistory.shortUrl.eq(inputUrl)
+				.or(QUrlHistory.urlHistory.originalUrl.eq(inputUrl)))
+			.fetchOne();
+
+		return urlHistory;
+	}
+
 	public boolean existsAnyUrl(String inputUrl){
 		Integer selectOne = queryFactory   // SELECT 1 WHERE ...
 			.selectOne()
