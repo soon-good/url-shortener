@@ -24,7 +24,7 @@ public class TestDockerSourceTest {
 	@DisplayName("MariaDB_커넥션_테스트")
 	void MariaDB_커넥션_테스트(){
 		UrlHistory urlHistory = new UrlHistory();
-		System.out.println(urlHistory.getId());
+		System.out.println(urlHistory.getUrlSeq());
 		List<UrlHistory> all = urlHistoryRepository.findAll();
 		System.out.println(all);
 	}
