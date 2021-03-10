@@ -20,6 +20,6 @@ public class UrlHistoryServiceImpl implements UrlHistoryService{
 
 	@Override
 	public boolean existUrl(String userInputUrl) {
-		return urlHistoryRepository.existsByOriginalUrlOrShortUrl(userInputUrl);
+		return urlHistoryRepository.existsByOriginalUrlOrShortUrl(userInputUrl, userInputUrl);
 	}
 }
