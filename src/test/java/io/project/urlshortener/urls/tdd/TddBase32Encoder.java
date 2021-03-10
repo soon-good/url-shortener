@@ -10,14 +10,14 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class TddBase62Encoder {
+public class TddBase32Encoder {
 	private final String BASE_64_LETTERS 			= "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
 	private final String BASE_62_LETTERS 			= "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	private final String BASE_32_LETTERS 			= "0123456789ABCGHKMQTbceklmnopqxyz";	// BASE62 에서 원하는 문자만을 선택하여 5bit 기반으로 변경
 
 	// 1) 문자열의 각 문자 하나를 8자리 문자열 기반 이진수로 변환
 	// : (8bit, 즉 1바이트(1~255까지의 문자열을 표현가능한 나열)로 변환)
-	Function<String,String> convertStringToBinaryString = (inputString) -> {
+	Function<String,String> stringToBinaryStringConverter = (inputString) -> {
 		char[] chars = inputString.toCharArray();
 		StringBuffer buffer = new StringBuffer();
 
@@ -95,6 +95,11 @@ public class TddBase62Encoder {
 		}
 	}
 
+	/**
+	 * 문자열 기반 이진수를 10진수로 변환
+	 * @param binaryString
+	 * @return
+	 */
 	private int convertStrBinaryToInteger(String binaryString){
 		int sum = 0;
 		for(int j=0; j<binaryString.length(); j++){
@@ -125,7 +130,7 @@ public class TddBase62Encoder {
 		// 1) 문자열의 각 문자 하나를 8자리 문자열 기반 이진수로 변환
 		// : (8bit, 즉 1바이트(1~255까지의 문자열을 표현가능한 나열)로 변환)
 		String moral = "Moral";
-		String binaryString = convertStringToBinaryString.apply(moral);
+		String binaryString = stringToBinaryStringConverter.apply(moral);
 
 		// 2) 8bit 단위로 표현된 비트 열을 5bit 단위 비트 단위 문자열로 변환하여 별도의 리스트에 저장
 		// : BASE32 인코딩을 위한 5bit 단위 분할
