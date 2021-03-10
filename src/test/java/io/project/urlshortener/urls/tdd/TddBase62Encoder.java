@@ -4,6 +4,7 @@ import com.google.common.hash.Hashing;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import org.apache.commons.codec.digest.MurmurHash3;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,35 @@ public class TddBase62Encoder {
 	private final String BASE_64_LETTERS 			= "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
 	private final String BASE_62_LETTERS 			= "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	private final String BASE_32_LETTERS 			= "0123456789ABCGHKMQTbceklmnopqxyz";	// BASE62 에서 원하는 문자만을 선택하여 5bit 기반으로 변경
+
+	// 1) 문자열의 각 문자 하나를 8자리 문자열 기반 이진수로 변환
+	// : (8bit, 즉 1바이트(1~255까지의 문자열을 표현가능한 나열)로 변환)
+	Function<String,String> convertStringToBinaryString = (inputString) -> {
+		char[] chars = inputString.toCharArray();
+		StringBuffer buffer = new StringBuffer();
+
+		for(char c : chars){
+			buffer.append(
+				String.format("%8s", Integer.toBinaryString(c))
+					.replaceAll(" ", "0")
+			);
+		}
+
+		System.out.println("buffer = " + buffer.toString() + ", length = " + buffer.toString().length());
+		return buffer.toString();
+	};
+
+	// 2) 8bit 단위로 표현된 비트 열을 5bit 단위 비트 단위 문자열로 변환하여 별도의 리스트에 저장
+	// : BASE32 인코딩을 위한 5bit 단위 분할
+	// : MSB 부터 5비트 단위로 bit 분할
+	Function<String, Integer> stringBitToIntegerConverter = (binaryString) -> {
+		int sum = 0;
+		for(int strIdx=0; strIdx<binaryString.length(); strIdx++){
+			int t = Integer.parseInt(binaryString.substring(strIdx, strIdx + 1));
+			sum = sum + (int)(t*Math.pow(2,4-strIdx));
+		}
+		return sum;
+	};
 
 	@Test
 	@DisplayName("ASCII코드_출력해보기")
@@ -91,29 +121,21 @@ public class TddBase62Encoder {
 	@Test
 	@DisplayName("5비트_단위버퍼로_나눈후_BASE32_인코딩")
 	void 단위버퍼로_나눈후_BASE32_인코딩(){
-		String moral = "Moral";
-		char[] chars = moral.toCharArray();
-		StringBuffer buffer = new StringBuffer();
 
 		// 1) 문자열의 각 문자 하나를 8자리 문자열 기반 이진수로 변환
 		// : (8bit, 즉 1바이트(1~255까지의 문자열을 표현가능한 나열)로 변환)
-		for(char c : chars){
-			buffer.append(
-				String.format("%8s", Integer.toBinaryString(c))
-					.replaceAll(" ", "0")
-			);
-		}
-
-		String binaryString = buffer.toString();
-		System.out.println("buffer = " + buffer.toString() + ", length = " + buffer.toString().length());
+		String moral = "Moral";
+		String binaryString = convertStringToBinaryString.apply(moral);
 
 		// 2) 8bit 단위로 표현된 비트 열을 5bit 단위 비트 단위 문자열로 변환하여 별도의 리스트에 저장
 		// : BASE32 인코딩을 위한 5bit 단위 분할
 		// : MSB 부터 5비트 단위로 bit 분할
 		List<String> binaryStrBy5BitsList = new ArrayList<>();
-		List<Integer> encodedBitsTest = new ArrayList<>();
+		List<Integer> encodedBitsInteger = new ArrayList<>();
 		StringBuffer encodedBuffer = new StringBuffer();
+
 		int max = binaryString.length()/5;
+
 		for(int i=0; i<max; i++){
 			String each5BitsString = "";
 			if(binaryString.length() < i*5+4){
@@ -126,12 +148,13 @@ public class TddBase62Encoder {
 			}
 			binaryStrBy5BitsList.add(each5BitsString);
 
-			int sum = convertStrBinaryToInteger(each5BitsString);
-			encodedBitsTest.add(sum);
+//			int sum = convertStrBinaryToInteger(each5BitsString);
+			Integer sum = stringBitToIntegerConverter.apply(each5BitsString);
+			encodedBitsInteger.add(sum);
 			encodedBuffer.append(BASE_32_LETTERS.charAt(sum));
 		}
 		System.out.println("encodedBuffer \t\t:: " + encodedBuffer.toString());
-		System.out.println("encodedBits List \t:: " + encodedBitsTest);
+		System.out.println("encodedBits List \t:: " + encodedBitsInteger);
 		System.out.println("binaryStrList \t\t:: " + binaryStrBy5BitsList);
 		System.out.println();
 	}
