@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'io.project'
@@ -23,9 +24,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'commons-validator:commons-validator:1.4.0'
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.2'
+    implementation 'com.querydsl:querydsl-jpa'
 
     implementation 'com.google.guava:guava:23.0-rc1'    // 제거예정
-    // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation 'commons-codec:commons-codec:1.15'   // 제거예정
 
     compileOnly 'org.projectlombok:lombok'
@@ -37,4 +38,23 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl{
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+configurations{
+    querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl{
+    options.annotationProcessorPath = configurations.querydsl
 }
