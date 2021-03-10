@@ -1,4 +1,4 @@
-package io.project.urlshortener.urls.tdd;
+package io.project.urlshortener.urls.tdd.encoding;
 
 import com.google.common.hash.Hashing;
 import java.nio.charset.Charset;
