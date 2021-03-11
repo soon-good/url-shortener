@@ -54,7 +54,33 @@ public class TddBase32Encoder {
 		return sum;
 	};
 
-	// 4) 8bit 문자열을 원본문자열로 변환
+	// 4) 5bit 를 BASE32 기반 문자열로 변환 (인코딩시 사용)
+	Function<String, String> base32Encoding = (binaryString) -> {
+		int max = binaryString.length()/5;
+		StringBuffer encodedBuffer = new StringBuffer();
+
+		for(int i=0; i<max; i++){
+			String each5BitsString = "";
+			if(binaryString.length() < i*5+4){
+				each5BitsString = binaryString.substring(i*5);
+//				binaryStrBy5BitsList.add(binaryString.substring(i*5));
+			}
+			else{
+				each5BitsString = binaryString.substring(i*5, i*5+5);
+//				binaryStrBy5BitsList.add(binaryString.substring(i*5, i*5+5));
+			}
+//			binaryStrBy5BitsList.add(each5BitsString);
+
+//			int sum = convertStrBinaryToInteger(each5BitsString);
+			Integer sum = string5BitToIntegerConverter.apply(each5BitsString);
+//			encodedBitsInteger.add(sum);
+			encodedBuffer.append(BASE_32_LETTERS.charAt(sum));
+		}
+
+		return encodedBuffer.toString();
+	};
+
+	// 5) 8bit 문자열을 원본문자열로 변환 (디코딩시 사용)
 	Function<String, String> fullBinary8bitToStringConverter = (inputString) -> {
 		StringBuffer expectedStringBuffer = new StringBuffer();
 		int max = inputString.length()/8;
@@ -169,35 +195,39 @@ public class TddBase32Encoder {
 		// : MSB 부터 5비트 단위로 bit 분할
 		List<String> binaryStrBy5BitsList = new ArrayList<>();
 		List<Integer> encodedBitsInteger = new ArrayList<>();
-		StringBuffer encodedBuffer = new StringBuffer();
 
-		int max = binaryString.length()/5;
+		String encodedResult = base32Encoding.apply(binaryString);
+		Assertions.assertThat(encodedResult.length()).isEqualTo(8);
+		System.out.println("encodedResult = " + encodedResult);
 
-		for(int i=0; i<max; i++){
-			String each5BitsString = "";
-			if(binaryString.length() < i*5+4){
-				each5BitsString = binaryString.substring(i*5);
-//				binaryStrBy5BitsList.add(binaryString.substring(i*5));
-			}
-			else{
-				each5BitsString = binaryString.substring(i*5, i*5+5);
-//				binaryStrBy5BitsList.add(binaryString.substring(i*5, i*5+5));
-			}
-			binaryStrBy5BitsList.add(each5BitsString);
-
-//			int sum = convertStrBinaryToInteger(each5BitsString);
-			Integer sum = string5BitToIntegerConverter.apply(each5BitsString);
-			encodedBitsInteger.add(sum);
-			encodedBuffer.append(BASE_32_LETTERS.charAt(sum));
-		}
-		System.out.println("encodedBuffer \t\t:: " + encodedBuffer.toString());
-		System.out.println("encodedBits List \t:: " + encodedBitsInteger);
-		System.out.println("binaryStrList \t\t:: " + binaryStrBy5BitsList);
-		System.out.println();
-
-		Assertions
-			.assertThat(encodedBuffer.toString().length())
-			.isEqualTo(8);
+//		int max = binaryString.length()/5;
+//		StringBuffer encodedBuffer = new StringBuffer();
+//
+//		for(int i=0; i<max; i++){
+//			String each5BitsString = "";
+//			if(binaryString.length() < i*5+4){
+//				each5BitsString = binaryString.substring(i*5);
+////				binaryStrBy5BitsList.add(binaryString.substring(i*5));
+//			}
+//			else{
+//				each5BitsString = binaryString.substring(i*5, i*5+5);
+////				binaryStrBy5BitsList.add(binaryString.substring(i*5, i*5+5));
+//			}
+//			binaryStrBy5BitsList.add(each5BitsString);
+//
+////			int sum = convertStrBinaryToInteger(each5BitsString);
+//			Integer sum = string5BitToIntegerConverter.apply(each5BitsString);
+//			encodedBitsInteger.add(sum);
+//			encodedBuffer.append(BASE_32_LETTERS.charAt(sum));
+//		}
+//		System.out.println("encodedBuffer \t\t:: " + encodedBuffer.toString());
+//		System.out.println("encodedBits List \t:: " + encodedBitsInteger);
+//		System.out.println("binaryStrList \t\t:: " + binaryStrBy5BitsList);
+//		System.out.println();
+//
+//		Assertions
+//			.assertThat(encodedBuffer.toString().length())
+//			.isEqualTo(8);
 	}
 
 	@Test
