@@ -1,7 +1,10 @@
 package io.project.urlshortener.urls.tdd.repository;
 
-import io.project.urlshortener.url.QdslUrlHistory;
+import io.project.urlshortener.url.repository.QdslUrlHistory;
 import io.project.urlshortener.url.UrlHistory;
+import io.project.urlshortener.url.repository.UrlHistoryRepository;
+import java.math.BigInteger;
+import java.util.List;
 import javax.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +18,9 @@ public class TddQdslUrlHistory {
 
 	@Autowired
 	EntityManager entityManager;
+
+	@Autowired
+	UrlHistoryRepository urlHistoryRepository;
 
 	QdslUrlHistory qdslUrlHistory;
 
@@ -37,5 +43,23 @@ public class TddQdslUrlHistory {
 		UrlHistory asdf = qdslUrlHistory.findByAnyUrl("asdf");
 		System.out.println(asdf);
 		Assertions.assertThat(asdf).isEqualTo(asdf);
+	}
+
+	@Test
+	@DisplayName("현재_시퀀스_값_가져오기_테스트")
+	void 현재_시퀀스_값_가져오기_테스트(){
+		BigInteger nextVal = qdslUrlHistory.getCurrentSequence();
+		System.out.println("nextVal = " + nextVal);
+		System.out.println("String.valueOf(nextVal) = " + String.valueOf(nextVal));
+
+		UrlHistory urlHistory = new UrlHistory();
+		urlHistory.setRequestCnt(BigInteger.ONE);
+		urlHistory.setShortUrl("a");
+		urlHistory.setOriginalUrl("abcde");
+
+		urlHistoryRepository.save(urlHistory);
+
+		List<UrlHistory> all = urlHistoryRepository.findAll();
+		System.out.println(all);
 	}
 }

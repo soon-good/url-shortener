@@ -23,9 +23,30 @@ public class Base32EncoderFunctions {
 	};
 
 	/**
-	 * 5bit 를 BASE32 기반 문자열로 반환 (인코딩시 사용)
+	 * 사용자의 요청URL을 이진수 문자열로 변환
 	 */
-	public static final Function<String, String> base32Encoding = (binaryString) -> {
+	public static final Function<String, String> userInputToBinaryStringConverter = (inputString) -> {
+		char[] chars = inputString.toCharArray();
+		StringBuffer buffer = new StringBuffer();
+
+		for(char c : chars){
+			buffer.append(
+				String.format("%8s", Integer.toBinaryString(c))
+					.replaceAll(" ", "0")
+			);
+		}
+
+		System.out.println("Base32EncoderFunctions::userInputToBinaryStringConverter");
+		System.out.println("buffer = " + buffer.toString() + ", length = " + buffer.toString().length());
+		return buffer.toString();
+	};
+
+	/**
+	 * 5bit 를 BASE32 기반 인코딩된 문자열로 반환 (인코딩시 사용)
+	 */
+	public static final Function<String, String> base32Encoding = (inputString) -> {
+		String binaryString = userInputToBinaryStringConverter.apply(inputString);
+
 		int max = binaryString.length()/5;
 		StringBuffer encodedBuffer = new StringBuffer();
 
@@ -51,7 +72,7 @@ public class Base32EncoderFunctions {
 	};
 
 	/**
-	 * 8bit 문자열을 int 값으로 변환
+	 * 8bit 문자열을 10진수 int 값으로 변환
 	 */
 	public static final Function<String, Integer> string8BitToIntegerConverter = (binaryString) -> {
 		int sum = 0;
@@ -63,7 +84,7 @@ public class Base32EncoderFunctions {
 	};
 
 	/**
-	 * 8bit 문자열을 원본문자열로 변환
+	 * base32 기반 인코딩되었던 문자열을 원본 문자열로 변환
 	 */
 	public static final Function<String, String> base32Decoding = (inputString) -> {
 		StringBuffer expectedStringBuffer = new StringBuffer();

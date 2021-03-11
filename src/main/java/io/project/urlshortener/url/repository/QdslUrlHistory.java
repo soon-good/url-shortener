@@ -1,9 +1,13 @@
-package io.project.urlshortener.url;
+package io.project.urlshortener.url.repository;
 
 import static io.project.urlshortener.url.QUrlHistory.urlHistory;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.project.urlshortener.url.QUrlHistory;
+import io.project.urlshortener.url.UrlHistory;
+import java.math.BigInteger;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -39,5 +43,13 @@ public class QdslUrlHistory {
 
 		final boolean isExist = selectOne != null ? true : false;
 		return isExist;
+	}
+
+	public BigInteger getCurrentSequence(){
+		Query query = entityManager
+			.createNativeQuery("select next_val from url_history_seq");
+
+		BigInteger sequence = (BigInteger)query.getSingleResult();
+		return sequence;
 	}
 }

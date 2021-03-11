@@ -55,7 +55,9 @@ public class TddBase32Encoder {
 	};
 
 	// 4) 5bit 를 BASE32 기반 문자열로 변환 (인코딩시 사용)
-	Function<String, String> base32Encoding = (binaryString) -> {
+	Function<String, String> base32Encoding = (inputString) -> {
+		String binaryString = stringToBinaryStringConverter.apply(inputString);
+
 		int max = binaryString.length()/5;
 		StringBuffer encodedBuffer = new StringBuffer();
 
@@ -63,11 +65,11 @@ public class TddBase32Encoder {
 			String each5BitsString = "";
 			if(binaryString.length() < i*5+4){
 				each5BitsString = binaryString.substring(i*5);
-//				binaryStrBy5BitsList.add(binaryString.substring(i*5));
+//				binaryStrBy5BitsList.add(inputString.substring(i*5));
 			}
 			else{
 				each5BitsString = binaryString.substring(i*5, i*5+5);
-//				binaryStrBy5BitsList.add(binaryString.substring(i*5, i*5+5));
+//				binaryStrBy5BitsList.add(inputString.substring(i*5, i*5+5));
 			}
 //			binaryStrBy5BitsList.add(each5BitsString);
 
@@ -188,7 +190,7 @@ public class TddBase32Encoder {
 		// 1) 문자열의 각 문자 하나를 8자리 문자열 기반 이진수로 변환
 		// : (8bit, 즉 1바이트(1~255까지의 문자열을 표현가능한 나열)로 변환)
 		String moral = "Moral";
-		String binaryString = stringToBinaryStringConverter.apply(moral);
+//		String binaryString = stringToBinaryStringConverter.apply(moral);
 
 		// 2) 8bit 단위로 표현된 비트 열을 5bit 단위 비트 단위 문자열로 변환하여 별도의 리스트에 저장
 		// : BASE32 인코딩을 위한 5bit 단위 분할
@@ -196,7 +198,7 @@ public class TddBase32Encoder {
 		List<String> binaryStrBy5BitsList = new ArrayList<>();
 		List<Integer> encodedBitsInteger = new ArrayList<>();
 
-		String encodedResult = base32Encoding.apply(binaryString);
+		String encodedResult = base32Encoding.apply(moral);
 		Assertions.assertThat(encodedResult.length()).isEqualTo(8);
 		System.out.println("encodedResult = " + encodedResult);
 
