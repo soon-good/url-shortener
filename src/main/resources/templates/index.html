@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>URL 단축기 </title>
@@ -12,6 +12,13 @@
 <div id="result" style="max-width: 800px;"></div>
 </body>
 </html>
+<script th:inline="javascript">
+  let test = [[${originUrl}]];
+  if(test != null && test != undefined && test != "")
+      window.location.href = test;
+</script>
+
+
 <script type="text/javascript">
 
   function encoding(){
@@ -25,7 +32,7 @@
       })
       .then(data => {
           console.log("data", data)
-          document.querySelector('#result').innerHTML = data.shortUrl;
+          document.querySelector('#result').innerHTML = window.location.origin + '/' + data.shortUrl;
       })
       .catch(excResp => {
           console.log(excResp)

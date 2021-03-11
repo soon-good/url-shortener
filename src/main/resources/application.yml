@@ -1,6 +1,9 @@
+
 spring:
   profiles:
     active: testdocker
+server:
+  port: 80
 ---
 spring:
   config:
