@@ -1,7 +1,7 @@
 package io.project.urlshortener.connections.jpa;
 
 import io.project.urlshortener.url.UrlHistory;
-import io.project.urlshortener.url.UrlHistoryRepository;
+import io.project.urlshortener.url.repository.UrlHistoryRepository;
 import java.util.List;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
