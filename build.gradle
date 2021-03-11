@@ -60,3 +60,9 @@ configurations{
 compileQuerydsl{
     options.annotationProcessorPath = configurations.querydsl
 }
+
+bootJar {
+//    archiveBaseName = "urlshortener"
+//    archiveVersion = "0.0.1"
+    archiveFileName = "urlshortener-0.0.1.jar"
+}
