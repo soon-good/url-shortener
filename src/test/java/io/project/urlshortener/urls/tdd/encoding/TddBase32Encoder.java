@@ -81,7 +81,7 @@ public class TddBase32Encoder {
 	};
 
 	// 5) 8bit 문자열을 원본문자열로 변환 (디코딩시 사용)
-	Function<String, String> fullBinary8bitToStringConverter = (inputString) -> {
+	Function<String, String> base32Decoding = (inputString) -> {
 		StringBuffer expectedStringBuffer = new StringBuffer();
 		int max = inputString.length()/8;
 		for (int i=0; i<max; i++){
@@ -282,7 +282,7 @@ public class TddBase32Encoder {
 		String expectedBinaryString = expectedStringBinaryBuffer.toString();
 		System.out.println("expectedBinaryString = " + expectedBinaryString);
 
-		String decodedString = fullBinary8bitToStringConverter.apply(expectedBinaryString);
+		String decodedString = base32Decoding.apply(expectedBinaryString);
 		System.out.println("decodedString = " + decodedString);
 		Assertions.assertThat(decodedString).isEqualTo(expected);
 
