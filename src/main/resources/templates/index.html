@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>URL 단축기 </title>
+</head>
+<body>
+<div>
+  URL : <input id="originalUrl" type="text" placeholder="URL 을 입력해주세요 (ex. http://www.google.com)"/>
+  <input type="button" onclick="encoding()" value="확인"/>
+</div>
+<div id="result" style="max-width: 800px;"></div>
+</body>
+</html>
+<script type="text/javascript">
+
+  function encoding(){
+      let targetUrl = document.querySelector('#originalUrl').value;
+      targetUrl = "http://localhost/url/encoding/base32" + "?" + "targetUrl="+targetUrl ;
+      console.log(targetUrl)
+
+      fetch(targetUrl, {method : 'get'})
+      .then(resp => {
+          return resp.json()
+      })
+      .then(data => {
+          console.log("data", data)
+          document.querySelector('#result').innerHTML = data.shortUrl;
+      })
+      .catch(excResp => {
+          console.log(excResp)
+      })
+  }
+
+</script>
