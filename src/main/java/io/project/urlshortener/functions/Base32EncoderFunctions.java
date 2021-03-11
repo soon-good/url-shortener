@@ -65,7 +65,7 @@ public class Base32EncoderFunctions {
 	/**
 	 * 8bit 문자열을 원본문자열로 변환
 	 */
-	public static final Function<String, String> fullBinary8bitToStringConverter = (inputString) -> {
+	public static final Function<String, String> base32Decoding = (inputString) -> {
 		StringBuffer expectedStringBuffer = new StringBuffer();
 		int max = inputString.length()/8;
 		for (int i=0; i<max; i++){
