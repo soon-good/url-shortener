@@ -1,4 +1,3 @@
-#!/bin/zsh
 # mariadb docker container 구동 스크립트
 
 name_codingtest_mysql='codingtest-mariadb'
