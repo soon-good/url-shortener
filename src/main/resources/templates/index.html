@@ -13,9 +13,11 @@
 </body>
 </html>
 <script th:inline="javascript">
-  let test = [[${originUrl}]];
-  if(test != null && test != undefined && test != "")
-      window.location.href = test;
+  let orgUrl = [[${originUrl}]];
+  if(orgUrl != null && orgUrl != undefined && orgUrl != ""){
+      let redirectUrl = window.location.protocol + "//" + orgUrl
+      window.location.href = redirectUrl
+  }
 </script>
 
 
